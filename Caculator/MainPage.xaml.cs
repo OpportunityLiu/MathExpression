@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using MathExpression;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
@@ -25,6 +26,20 @@ namespace Caculator
         public MainPage()
         {
             this.InitializeComponent();
+            lv.ItemsSource = Parser.Functions.Keys;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var r = Parser.Parse(box.Text);
+                block.Text = $"{r.Formatted} = {r.Compiled.DynamicInvoke()}";
+            }
+            catch(Exception ex)
+            {
+                block.Text = $"{ex.GetType()}\n{ex.Message}";
+            }
         }
     }
 }
