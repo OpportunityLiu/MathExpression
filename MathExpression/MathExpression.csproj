@@ -116,9 +116,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FunctionInfo.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="Functions.cs" />
+    <Compile Include="IdDictionary.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="ParseResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TokenExtension.cs" />
     <Compile Include="Tokenizer.cs" />
     <EmbeddedResource Include="Properties\MathExpression.rd.xml" />
   </ItemGroup>

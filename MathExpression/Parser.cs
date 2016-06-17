@@ -58,7 +58,7 @@ namespace MathExpression
     {
 
         #region Public Parse
-        public static IParseResult<Delegate> Parse(string expression)
+        public static IParseResult Parse(string expression)
         {
             var ana = parseImpl(expression);
             switch(ana.Parameters.Count)
@@ -98,91 +98,91 @@ namespace MathExpression
             case 16:
                 return new ParseResult<Function16>(ana);
             default:
-                return new ParseResult(ana);
+                throw new PlatformNotSupportedException();
             }
         }
 
-        public static IParseResultEx<Function0> Parse0(string expression)
+        public static IParseResult<Function0> Parse0(string expression)
         {
             return new ParseResult<Function0>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function1> Parse1(string expression)
+        public static IParseResult<Function1> Parse1(string expression)
         {
             return new ParseResult<Function1>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function2> Parse2(string expression)
+        public static IParseResult<Function2> Parse2(string expression)
         {
             return new ParseResult<Function2>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function3> Parse3(string expression)
+        public static IParseResult<Function3> Parse3(string expression)
         {
             return new ParseResult<Function3>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function4> Parse4(string expression)
+        public static IParseResult<Function4> Parse4(string expression)
         {
             return new ParseResult<Function4>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function5> Parse5(string expression)
+        public static IParseResult<Function5> Parse5(string expression)
         {
             return new ParseResult<Function5>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function6> Parse6(string expression)
+        public static IParseResult<Function6> Parse6(string expression)
         {
             return new ParseResult<Function6>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function7> Parse7(string expression)
+        public static IParseResult<Function7> Parse7(string expression)
         {
             return new ParseResult<Function7>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function8> Parse8(string expression)
+        public static IParseResult<Function8> Parse8(string expression)
         {
             return new ParseResult<Function8>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function9> Parse9(string expression)
+        public static IParseResult<Function9> Parse9(string expression)
         {
             return new ParseResult<Function9>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function10> Parse10(string expression)
+        public static IParseResult<Function10> Parse10(string expression)
         {
             return new ParseResult<Function10>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function11> Parse11(string expression)
+        public static IParseResult<Function11> Parse11(string expression)
         {
             return new ParseResult<Function11>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function12> Parse12(string expression)
+        public static IParseResult<Function12> Parse12(string expression)
         {
             return new ParseResult<Function12>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function13> Parse13(string expression)
+        public static IParseResult<Function13> Parse13(string expression)
         {
             return new ParseResult<Function13>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function14> Parse14(string expression)
+        public static IParseResult<Function14> Parse14(string expression)
         {
             return new ParseResult<Function14>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function15> Parse15(string expression)
+        public static IParseResult<Function15> Parse15(string expression)
         {
             return new ParseResult<Function15>(parseImpl(expression));
         }
 
-        public static IParseResultEx<Function16> Parse16(string expression)
+        public static IParseResult<Function16> Parse16(string expression)
         {
             return new ParseResult<Function16>(parseImpl(expression));
         }
@@ -338,7 +338,7 @@ namespace MathExpression
         }
 
         // Factor -> { AddOp } Function | Id | Number | "(" Expression ")"
-        // Function -> Id  "(" Expression { "," Expression } ")"
+        // Function -> Id  "(" [ Expression ] { "," Expression } ")"
         private static Expression factor(Analyzer analyzer)
         {
             var first = analyzer.Current;
@@ -348,12 +348,12 @@ namespace MathExpression
                 analyzer.MoveNext();
                 return Expression.Constant(first.Number, typeof(double));
             case TokenType.Id:
-                FunctionInfo func;
+                IFunctionInfo func;
                 double constValue;
-                if(Functions.TryGetValue(first.Id, out func))
+                if(functions.TryGetValue(first.Id, out func))
                 {
                     analyzer.Expressions.Pop();
-                    analyzer.Expressions.Push(FunctionNames[first.Id]);
+                    analyzer.Expressions.Push(functions.GetKey(first.Id));
 
                     if(!analyzer.MoveNext())
                         throw ParseException.WrongEneded();
@@ -362,42 +362,61 @@ namespace MathExpression
                     if(!analyzer.MoveNext())
                         throw ParseException.WrongEneded();
                     var paramList = new List<Expression>();
-                    paramList.Add(expression(analyzer));
-                    while(analyzer.Current.IsComma())
+                    if(!analyzer.Current.IsRightBracket())
                     {
-                        if(!analyzer.MoveNext())
-                            throw ParseException.WrongEneded();
                         paramList.Add(expression(analyzer));
+                        while(analyzer.Current.IsComma())
+                        {
+                            if(!analyzer.MoveNext())
+                                throw ParseException.WrongEneded();
+                            paramList.Add(expression(analyzer));
+                        }
+                        if(analyzer.Current.Type != TokenType.RightBracket)
+                            throw ParseException.UnexpectedToken(analyzer, TokenType.RightBracket);
                     }
-                    if(analyzer.Current.Type != TokenType.RightBracket)
-                        throw ParseException.UnexpectedToken(analyzer, TokenType.RightBracket);
                     analyzer.MoveNext();
-                    var funcToCall = func.Fuctions.SingleOrDefault(f => f.ParamCount == paramList.Count);
-                    if(funcToCall == null)
-                        throw ParseException.ParamMismatch(analyzer, func);
-                    return Expression.Call(funcToCall.MethodInfo, paramList);
-                }
-                else if(ConstantValues.TryGetValue(first.Id, out constValue))
-                {
-                    analyzer.Expressions.Pop();
-                    analyzer.Expressions.Push(ConstantNames[first.Id]);
-
-                    analyzer.MoveNext();
-                    return Expression.Constant(constValue, typeof(double));
+                    var funcToCall = func.GetExecutable(paramList.Count);
+                    if(funcToCall?.Item2 == null)
+                        throw ParseException.ParamMismatch(analyzer, first, func);
+                    Expression instance = null;
+                    if(funcToCall.Item1 != null)
+                        instance = Expression.Constant(funcToCall.Item1);
+                    if(funcToCall.Item2.GetParameters().FirstOrDefault()?.GetCustomAttribute<ParamArrayAttribute>() != null)
+                    {
+                        var getarray = Expression.NewArrayInit(typeof(double), paramList);
+                        paramList.Clear();
+                        paramList.Add(getarray);
+                    }
+                    return Expression.Call(instance, funcToCall.Item2, paramList);
                 }
                 else
                 {
-                    analyzer.MoveNext();
-                    ParameterExpression param;
-                    if(analyzer.Parameters.TryGetValue(first.Id, out param))
+                    if(constantValues.TryGetValue(first.Id, out constValue))
                     {
-                        return param;
+                        analyzer.Expressions.Pop();
+                        analyzer.Expressions.Push(constantValues.GetKey(first.Id));
+
+                        analyzer.MoveNext();
+                        if(analyzer.Current.IsLeftBracket())
+                            throw ParseException.NotFunction(analyzer, first);
+                        return Expression.Constant(constValue, typeof(double));
                     }
                     else
                     {
-                        param = Expression.Parameter(typeof(double), first.Id);
-                        analyzer.Parameters.Add(first.Id, param);
-                        return param;
+                        analyzer.MoveNext();
+                        if(analyzer.Current.IsLeftBracket())
+                            throw ParseException.NotFunction(analyzer, first);
+                        ParameterExpression param;
+                        if(analyzer.Parameters.TryGetValue(first.Id, out param))
+                        {
+                            return param;
+                        }
+                        else
+                        {
+                            param = Expression.Parameter(typeof(double), first.Id);
+                            analyzer.Parameters.Add(first.Id, param);
+                            return param;
+                        }
                     }
                 }
             case TokenType.LeftBracket:
@@ -427,167 +446,17 @@ namespace MathExpression
             }
         }
 
-        public static IReadOnlyDictionary<string, double> ConstantValues
-        {
-            get;
-        } = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
+        public static IDictionary<string, double> ConstantValues => constantValues;
+
+        private static IdDictionary<double> constantValues = new IdDictionary<double>()
         {
             ["PI"] = Math.PI,
             ["E"] = Math.E,
         };
 
-        private static Dictionary<string, string> ConstantNames = ConstantValues.Keys.ToDictionary(s => s, StringComparer.OrdinalIgnoreCase);
+        public static IDictionary<string, IFunctionInfo> Functions => functions;
 
-        public static IReadOnlyDictionary<string, FunctionInfo> Functions
-        {
-            get;
-        } = (from item in typeof(Math).GetMethods()
-             where item.ReturnType == typeof(double)
-             let param = item.GetParameters()
-             where param.All(p => p.ParameterType == typeof(double))
-             group new Function(item, param.Length) by item.Name into functionGroup
-             select new FunctionInfo(functionGroup))
-            .ToDictionary(item => item.Name, StringComparer.OrdinalIgnoreCase);
-
-        private static Dictionary<string, string> FunctionNames = Functions.Keys.ToDictionary(s => s, StringComparer.OrdinalIgnoreCase);
-    }
-
-    static class TokenExtention
-    {
-        public static bool IsAddOp(this Token that)
-        {
-            return that.Type == TokenType.Plus || that.Type == TokenType.Minus;
-        }
-
-        public static bool IsMulOp(this Token that)
-        {
-            return that.Type == TokenType.Multiply || that.Type == TokenType.Divide;
-        }
-
-        public static bool IsPowOp(this Token that)
-        {
-            return that.Type == TokenType.Power;
-        }
-
-        public static bool IsId(this Token that)
-        {
-            return that.Type == TokenType.Id;
-        }
-
-        public static bool IsNumber(this Token that)
-        {
-            return that.Type == TokenType.Number;
-        }
-
-        public static bool IsLeftBracket(this Token that)
-        {
-            return that.Type == TokenType.LeftBracket;
-        }
-
-        public static bool IsRightBracket(this Token that)
-        {
-            return that.Type == TokenType.RightBracket;
-        }
-
-        public static bool IsComma(this Token that)
-        {
-            return that.Type == TokenType.Comma;
-        }
-    }
-
-    public interface IParseResult<out TDelegate>
-    {
-        LambdaExpression Expression
-        {
-            get;
-        }
-
-        TDelegate Compiled
-        {
-            get;
-        }
-
-        IReadOnlyList<string> Parameters
-        {
-            get;
-        }
-
-        string Formatted
-        {
-            get;
-        }
-    }
-
-    public interface IParseResultEx<TDelegate> : IParseResult<TDelegate>
-    {
-        new Expression<TDelegate> Expression
-        {
-            get;
-        }
-    }
-
-    class ParseResult : IParseResult<Delegate>
-    {
-        internal ParseResult(Analyzer analyzer)
-        {
-            Formatted = analyzer.ExprStr;
-            Parameters = new ReadOnlyCollection<string>(analyzer.Parameters.Keys.ToList());
-            Expression = System.Linq.Expressions.Expression.Lambda(analyzer.Expr, analyzer.ExprStr, analyzer.Parameters.Values);
-            Compiled = Expression.Compile();
-        }
-
-        public Delegate Compiled
-        {
-            get;
-        }
-
-        public LambdaExpression Expression
-        {
-            get;
-        }
-
-        public string Formatted
-        {
-            get;
-        }
-
-        public IReadOnlyList<string> Parameters
-        {
-            get;
-        }
-    }
-
-    class ParseResult<TDelegate> : IParseResultEx<TDelegate>
-    {
-        internal ParseResult(Analyzer analyzer)
-        {
-            Formatted = analyzer.ExprStr;
-            Parameters = new ReadOnlyCollection<string>(analyzer.Parameters.Keys.ToList());
-            Expression = System.Linq.Expressions.Expression.Lambda<TDelegate>(analyzer.Expr, analyzer.ExprStr, analyzer.Parameters.Values);
-            Compiled = Expression.Compile();
-        }
-
-        public Expression<TDelegate> Expression
-        {
-            get;
-        }
-
-        public TDelegate Compiled
-        {
-            get;
-        }
-
-        public IReadOnlyList<string> Parameters
-        {
-            get;
-        }
-
-        public string Formatted
-        {
-            get;
-        }
-
-        LambdaExpression IParseResult<TDelegate>.Expression => Expression;
+        private static IdDictionary<IFunctionInfo> functions = FunctionInfo.GetFunctions();
     }
 
     public class ParseException : Exception
@@ -606,12 +475,14 @@ namespace MathExpression
         internal static ParseException EmptyToken()
             => new ParseException($"No tokens found.");
 
-        internal static ParseException ParamMismatch(Analyzer analyzer, FunctionInfo function)
+        internal static ParseException ParamMismatch(Analyzer analyzer, Token functionToken, IFunctionInfo functionInfo)
             => new ParseException($@"Mismatch between function and paramter list. Need {
-                string.Join(" or ", function.Fuctions.Select(f => f.ParamCount.ToString()).ToArray())
+                string.Join(" or ", functionInfo.PreferedParameterCount)
                 } parameter(s).
-Function: {function.Name}
-Position: {analyzer.Current.Position}");
+Position: {functionToken.Position + 1}");
+
+        internal static ParseException NotFunction(Analyzer analyzer, Token notFunctionToken)
+            => new ParseException($"{notFunctionToken.Id} is not a function.\nPosition: {notFunctionToken.Position + 1}");
 
         private ParseException(string message) : base(message) { }
         private ParseException(string message, Exception inner) : base(message, inner) { }
