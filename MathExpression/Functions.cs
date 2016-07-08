@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +27,11 @@ namespace MathExpression
         public static double Sign(double value)
         {
             return Math.Sign(value);
+        }
+
+        public static double Hypot(double x, double y)
+        {
+            return new Complex(x, y).Magnitude;
         }
     }
 }

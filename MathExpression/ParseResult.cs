@@ -10,10 +10,8 @@ using System.Threading.Tasks;
 
 namespace MathExpression
 {
-    public interface IParseResult
+    public interface IParseResult : IFunctionInfo
     {
-        IFunctionInfo AsFunctionInfo();
-
         IReadOnlyList<string> Parameters
         {
             get;
@@ -23,11 +21,16 @@ namespace MathExpression
         {
             get;
         }
+
+        Delegate Compiled
+        {
+            get;
+        }
     }
 
     public interface IParseResult<TDelegate> : IParseResult
     {
-        TDelegate Compiled
+        new TDelegate Compiled
         {
             get;
         }
@@ -38,7 +41,7 @@ namespace MathExpression
         }
     }
 
-    class ParseResult<TDelegate> : IParseResult<TDelegate>
+    class ParseResult<TDelegate> : IParseResult<TDelegate>, IFunctionInfo
     {
         internal ParseResult(Analyzer analyzer)
         {
@@ -68,14 +71,32 @@ namespace MathExpression
             get;
         }
 
-        public IFunctionInfo AsFunctionInfo()
+        Delegate IParseResult.Compiled => (Delegate)(object)Compiled;
+
+        public IReadOnlyCollection<int> PreferedParameterCount
         {
-            if(funcInfo == null)
-                funcInfo = new ParsedFunctionInfo(this);
-            return funcInfo;
+            get
+            {
+                return this.funcInfo.PreferedParameterCount;
+            }
         }
 
-        private ParsedFunctionInfo funcInfo;
+        public Tuple<object, MethodInfo> GetExecutable(int parameterCount)
+        {
+            return this.funcInfo.GetExecutable(parameterCount);
+        }
+
+        private ParsedFunctionInfo funcInfo
+        {
+            get
+            {
+                if(_funcInfo == null)
+                    _funcInfo = new ParsedFunctionInfo(this);
+                return _funcInfo;
+            }
+        }
+
+        private ParsedFunctionInfo _funcInfo;
 
         private class ParsedFunctionInfo : IFunctionInfo
         {

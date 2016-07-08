@@ -7,17 +7,26 @@
       mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBox x:Name="box" />
-            <TextBlock x:Name="block" />
-            <Button Click="Button_Click"
-                    Content="Execute" />
-        </StackPanel>
-        <ListView Grid.Row="1"
-                  x:Name="lv" />
+        <ListView ItemsSource="{x:Bind records}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:Record">
+                    <StackPanel>
+                        <AutoSuggestBox x:Name="box"
+                                        Text="{x:Bind Input, Mode=TwoWay}" 
+                                        QuerySubmitted="box_QuerySubmitted"
+                                        QueryIcon="Play" 
+                                Tag="{x:Bind}" />
+                        <TextBlock x:Name="block"
+                                   Text="{x:Bind Output, Mode=OneWay}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>
