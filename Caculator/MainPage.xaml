@@ -7,7 +7,8 @@
       mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView ItemsSource="{x:Bind records}">
+        <ListView x:Name="lv" ItemsSource="{x:Bind records}"
+                  SelectionMode="None">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment"
@@ -18,10 +19,12 @@
                 <DataTemplate x:DataType="local:Record">
                     <StackPanel>
                         <AutoSuggestBox x:Name="box"
-                                        Text="{x:Bind Input, Mode=TwoWay}" 
+                                        Text="{x:Bind Input, Mode=TwoWay}"
                                         QuerySubmitted="box_QuerySubmitted"
-                                        QueryIcon="Play" 
-                                Tag="{x:Bind}" />
+                                        QueryIcon="Play"
+                                        IsEnabled="{x:Bind CanInput, Mode=OneWay}"
+                                        Tag="{x:Bind}" 
+                                        Loaded="box_Loaded"/>
                         <TextBlock x:Name="block"
                                    Text="{x:Bind Output, Mode=OneWay}" />
                     </StackPanel>

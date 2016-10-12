@@ -33,7 +33,10 @@ namespace Caculator
             set
             {
                 Set(ref output, value);
+                RaisePropertyChanged(nameof(CanInput));
             }
         }
+
+        public bool CanInput => output == null;
     }
 }
