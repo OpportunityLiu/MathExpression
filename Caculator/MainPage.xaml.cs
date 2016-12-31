@@ -32,6 +32,7 @@ namespace Caculator
             var f = Parser.Parse("sin(x)^2");
             Parser.Functions["Sin2"] = f;
             records.Add(new Record());
+            var p = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
         }
 
         private ObservableCollection<Record> records = new ObservableCollection<Record>();
