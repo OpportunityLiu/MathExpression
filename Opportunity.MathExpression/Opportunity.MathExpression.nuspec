@@ -6,8 +6,8 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://github.com/OpportunityLiu/UWPConverters/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/OpportunityLiu/UWPConverters</projectUrl>
+    <licenseUrl>https://github.com/OpportunityLiu/MathExpression/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/OpportunityLiu/MathExpression</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>First version of the package.</releaseNotes>
