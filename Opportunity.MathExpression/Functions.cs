@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathExpression
+namespace Opportunity.MathExpression
 {
     public static class Functions
     {

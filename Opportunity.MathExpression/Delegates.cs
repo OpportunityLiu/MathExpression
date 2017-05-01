@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathExpression.Delegates
+namespace Opportunity.MathExpression.Delegates
 {
     public delegate double Function0();
     public delegate double Function1(double arg);

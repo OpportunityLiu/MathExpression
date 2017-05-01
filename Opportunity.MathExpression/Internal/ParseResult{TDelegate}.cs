@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Opportunity.MathExpression.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,39 +9,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathExpression
+namespace Opportunity.MathExpression.Internal
 {
-    public interface IParseResult : IFunctionInfo
-    {
-        IReadOnlyList<string> Parameters
-        {
-            get;
-        }
-
-        string Formatted
-        {
-            get;
-        }
-
-        Delegate Compiled
-        {
-            get;
-        }
-    }
-
-    public interface IParseResult<TDelegate> : IParseResult
-    {
-        new TDelegate Compiled
-        {
-            get;
-        }
-
-        Expression<TDelegate> Expression
-        {
-            get;
-        }
-    }
-
     class ParseResult<TDelegate> : IParseResult<TDelegate>, IFunctionInfo
     {
         internal ParseResult(Analyzer analyzer)
@@ -81,7 +51,7 @@ namespace MathExpression
             }
         }
 
-        public Tuple<object, MethodInfo> GetExecutable(int parameterCount)
+        ExecutableInfo IFunctionInfo.GetExecutable(int parameterCount)
         {
             return this.funcInfo.GetExecutable(parameterCount);
         }
@@ -132,15 +102,15 @@ namespace MathExpression
                 get;
             }
 
-            private Tuple<object, MethodInfo> executable;
+            private ExecutableInfo executable;
 
-            public Tuple<object, MethodInfo> GetExecutable(int parameterCount)
+            public ExecutableInfo GetExecutable(int parameterCount)
             {
-                if(parameterCount != parent.Parameters.Count)
-                    return null;
-                if(executable == null)
-                    executable = Tuple.Create((object)parent.Compiled, parent.Compiled.GetType().GetMethod("Invoke"));
-                return executable;
+                if(parameterCount != this.parent.Parameters.Count)
+                    return default(ExecutableInfo);
+                if(this.executable.Method==null)
+                    this.executable = new ExecutableInfo(this.parent.Compiled, this.parent.Compiled.GetType().GetMethod("Invoke"));
+                return this.executable;
             }
         }
     }

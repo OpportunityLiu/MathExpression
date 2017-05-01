@@ -130,9 +130,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MathExpression\MathExpression.csproj">
+    <ProjectReference Include="..\Opportunity.MathExpression\Opportunity.MathExpression.csproj">
       <Project>{946bdc38-a325-4325-bc86-48f923b01dd6}</Project>
-      <Name>MathExpression</Name>
+      <Name>Opportunity.MathExpression</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

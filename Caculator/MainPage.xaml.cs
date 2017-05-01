@@ -12,10 +12,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using MathExpression;
 using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Opportunity.MathExpression;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
@@ -42,15 +42,15 @@ namespace Caculator
             var data = (Record)sender.Tag;
             try
             {
-                var r = Parser.Parse(data.Input);
+                var r = Parser.Parse0(data.Input);
                 data.Input = r.Formatted;
-                data.Output = $"Ans = {r.Compiled.DynamicInvoke()}";
+                data.Output = $"Ans = {r.Compiled()}";
             }
             catch(Exception ex)
             {
                 data.Output = $"{ex.GetType()}\n{ex.Message}";
             }
-            records.Add(new Record());
+            this.records.Add(new Record());
         }
 
         private async void box_Loaded(object sender, RoutedEventArgs e)
