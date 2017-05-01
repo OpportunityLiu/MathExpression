@@ -25,11 +25,10 @@
     http://go.microsoft.com/fwlink/?LinkID=391919
 -->
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
-  <Library Name="MathExpression">
+  <Library Name="Opportunity.MathExpression">
+  	<!-- add directives for your library here -->
     <Type Name="System.Math" Dynamic="Required Public"/>
     <Type Name="MathExpression.Functions" Dynamic="Required Public"/>
-
-  	<!-- add directives for your library here -->
-
+    <Namespace Name="Opportunity.MathExpression.Delegates" Dynamic="Required Public"/>
   </Library>
 </Directives>

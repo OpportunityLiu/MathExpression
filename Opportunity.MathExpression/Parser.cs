@@ -11,9 +11,19 @@ using Opportunity.MathExpression.Internal;
 
 namespace Opportunity.MathExpression
 {
+    /// <summary>
+    /// The parser used to parse math expressions.
+    /// </summary>
     public static class Parser
     {
         #region Public Parse
+        /// <summary>
+        /// Parse the <paramref name="expression"/>.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
         public static IParseResult Parse(string expression)
         {
             var ana = parseImpl(expression);
@@ -58,86 +68,222 @@ namespace Opportunity.MathExpression
             }
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> without parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function0> Parse0(string expression)
         {
             return new ParseResult<Function0>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 1 parameter.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function1> Parse1(string expression)
         {
             return new ParseResult<Function1>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 2 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function2> Parse2(string expression)
         {
             return new ParseResult<Function2>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 3 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function3> Parse3(string expression)
         {
             return new ParseResult<Function3>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 4 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function4> Parse4(string expression)
         {
             return new ParseResult<Function4>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 5 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function5> Parse5(string expression)
         {
             return new ParseResult<Function5>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 6 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function6> Parse6(string expression)
         {
             return new ParseResult<Function6>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 7 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function7> Parse7(string expression)
         {
             return new ParseResult<Function7>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 8 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function8> Parse8(string expression)
         {
             return new ParseResult<Function8>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 9 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function9> Parse9(string expression)
         {
             return new ParseResult<Function9>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 10 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function10> Parse10(string expression)
         {
             return new ParseResult<Function10>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 11 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function11> Parse11(string expression)
         {
             return new ParseResult<Function11>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 12 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function12> Parse12(string expression)
         {
             return new ParseResult<Function12>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 13 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function13> Parse13(string expression)
         {
             return new ParseResult<Function13>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 14 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function14> Parse14(string expression)
         {
             return new ParseResult<Function14>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 15 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function15> Parse15(string expression)
         {
             return new ParseResult<Function15>(parseImpl(expression));
         }
 
+        /// <summary>
+        /// Parse the <paramref name="expression"/> with 16 parameters.
+        /// </summary>
+        /// <param name="expression">The math expression to parse.</param>
+        /// <returns>The <see cref="IParseResult"/> represents the <paramref name="expression"/>.</returns>
+        /// <exception cref="TokenizeException">Error in tokenizing <paramref name="expression"/>.</exception>
+        /// <exception cref="ParseException">Error in parsing <paramref name="expression"/>.</exception>
+        /// <exception cref="ArgumentException">Incorrect number of parameters supplied.</exception>
         public static IParseResult<Function16> Parse16(string expression)
         {
             return new ParseResult<Function16>(parseImpl(expression));
@@ -402,6 +548,10 @@ namespace Opportunity.MathExpression
             }
         }
 
+        /// <summary>
+        /// Constant values can be used in math expressions.
+        /// You can edit this dictionary to add/remove/edit constant values.
+        /// </summary>
         public static IDictionary<string, double> ConstantValues => constantValues;
 
         private static IdDictionary<double> constantValues = new IdDictionary<double>()
@@ -410,6 +560,10 @@ namespace Opportunity.MathExpression
             ["E"] = Math.E,
         };
 
+        /// <summary>
+        /// Functions can be used in math expressions.
+        /// You can edit this dictionary to add/remove/edit functions.
+        /// </summary>
         public static IDictionary<string, IFunctionInfo> Functions => functions;
 
         private static IdDictionary<IFunctionInfo> functions = getFunctions();

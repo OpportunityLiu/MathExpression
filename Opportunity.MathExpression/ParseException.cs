@@ -3,6 +3,9 @@ using Opportunity.MathExpression.Internal;
 
 namespace Opportunity.MathExpression
 {
+    /// <summary>
+    /// Exception in parsing math expressions. 
+    /// </summary>
     public class ParseException : Exception
     {
         internal static ParseException UnexpectedToken(Analyzer analyzer, TokenType? expected = null)
@@ -28,7 +31,12 @@ Position: {functionToken.Position + 1}");
         internal static ParseException NotFunction(Analyzer analyzer, Token notFunctionToken)
             => new ParseException($"{notFunctionToken.Id} is not a function.\nPosition: {notFunctionToken.Position + 1}");
 
-        private ParseException(string message) : base(message) { }
-        private ParseException(string message, Exception inner) : base(message, inner) { }
+        private ParseException(string message) : base(message)
+        {
+        }
+
+        private ParseException(string message, Exception inner) : base(message, inner)
+        {
+        }
     }
 }
