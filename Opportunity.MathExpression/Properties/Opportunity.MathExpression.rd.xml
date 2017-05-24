@@ -28,7 +28,7 @@
   <Library Name="Opportunity.MathExpression">
   	<!-- add directives for your library here -->
     <Type Name="System.Math" Dynamic="Required Public"/>
-    <Type Name="MathExpression.Functions" Dynamic="Required Public"/>
+    <Type Name="Opportunity.MathExpression.Functions" Dynamic="Required Public"/>
     <Namespace Name="Opportunity.MathExpression.Delegates" Dynamic="Required Public"/>
   </Library>
 </Directives>
