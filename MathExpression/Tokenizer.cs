@@ -11,13 +11,16 @@ namespace MathExpression
         public static IEnumerable<Token> Tokenize(string experssion)
         {
             var next = 0;
-            while(true)
+            while (true)
             {
-                while(next < experssion.Length && char.IsWhiteSpace(experssion[next]))
+                while (next < experssion.Length && char.IsWhiteSpace(experssion[next]))
                     next++;
-                if(next >= experssion.Length)
+                if (next >= experssion.Length)
+                {
+                    yield return Token.EOF(next++);
                     yield break;
-                switch(experssion[next])
+                }
+                switch (experssion[next])
                 {
                 case '+':
                     yield return Token.Plus(next++);
@@ -45,12 +48,12 @@ namespace MathExpression
                     break;
                 default:
                     // ID的词法识别分析
-                    if(char.IsLetter(experssion[next]))
+                    if (char.IsLetter(experssion[next]))
                     {
                         var startPos = next;
                         var count = 1;
                         next++;
-                        while(next < experssion.Length && (char.IsLetter(experssion[next]) || char.IsDigit(experssion[next])))
+                        while (next < experssion.Length && (char.IsLetter(experssion[next]) || char.IsDigit(experssion[next])))
                         {
                             next++;
                             count++;
@@ -58,22 +61,22 @@ namespace MathExpression
                         yield return new Token(experssion.Substring(startPos, count), startPos);
                     }
                     // NUM的词法识别分析
-                    else if(char.IsDigit(experssion[next]) || experssion[next] == '.')
+                    else if (char.IsDigit(experssion[next]) || experssion[next] == '.')
                     {
                         var startPos = next;
                         var count = 1;
                         var hasDot = experssion[next] == '.';
                         next++;
-                        while(next < experssion.Length)
+                        while (next < experssion.Length)
                         {
-                            if(char.IsDigit(experssion[next]))
+                            if (char.IsDigit(experssion[next]))
                             {
                                 next++;
                                 count++;
                             }
-                            else if(experssion[next] == '.')
+                            else if (experssion[next] == '.')
                             {
-                                if(hasDot)
+                                if (hasDot)
                                     throw new TokenizeException(experssion, "Multiple '.' were detected.", next);
                                 hasDot = true;
                                 next++;
@@ -85,7 +88,7 @@ namespace MathExpression
                             }
                         }
                         var number = experssion.Substring(startPos, count);
-                        if(count == 1 && hasDot)
+                        if (count == 1 && hasDot)
                             yield return new Token(0, startPos);
                         else
                         {
@@ -94,7 +97,7 @@ namespace MathExpression
                             {
                                 result = double.Parse(number);
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 throw new TokenizeException(experssion, $"Invalid number \"{number}\".", startPos, ex);
                             }
@@ -153,7 +156,7 @@ namespace MathExpression
 
         public override string ToString()
         {
-            switch(Type)
+            switch (Type)
             {
             case TokenType.Number:
                 return Number.ToString();
@@ -188,11 +191,13 @@ namespace MathExpression
         public static Token LeftBracket(int position) => new Token(TokenType.LeftBracket, position);
         public static Token RightBracket(int position) => new Token(TokenType.RightBracket, position);
         public static Token Comma(int position) => new Token(TokenType.Comma, position);
+        public static Token EOF(int position) => new Token(TokenType.EOF, position);
     }
 
     [Flags]
     enum TokenType
     {
+        EOF = 0,
         Number = 1,
         Id = 2,
         LeftBracket = 4,

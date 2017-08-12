@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caculator", "Caculator\Caculator.csproj", "{D2468D70-2B9A-4132-B3E0-F0B6C4693F4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathExpression", "MathExpression\MathExpression.csproj", "{946BDC38-A325-4325-BC86-48F923B01DD6}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MathExpressionFs", "MathExpressionFs\MathExpressionFs.fsproj", "{BCC7A24C-F08F-43F1-875F-88D29A68AE90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,22 @@ Global
 		{946BDC38-A325-4325-BC86-48F923B01DD6}.Release|x64.Build.0 = Release|x64
 		{946BDC38-A325-4325-BC86-48F923B01DD6}.Release|x86.ActiveCfg = Release|x86
 		{946BDC38-A325-4325-BC86-48F923B01DD6}.Release|x86.Build.0 = Release|x86
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Debug|ARM.Build.0 = Debug|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Debug|x64.Build.0 = Debug|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Debug|x86.Build.0 = Debug|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Release|ARM.ActiveCfg = Release|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Release|ARM.Build.0 = Release|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Release|x64.ActiveCfg = Release|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Release|x64.Build.0 = Release|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Release|x86.ActiveCfg = Release|Any CPU
+		{BCC7A24C-F08F-43F1-875F-88D29A68AE90}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
