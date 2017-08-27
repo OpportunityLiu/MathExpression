@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathExpression
+namespace Opportunity.MathExpression.Internal
 {
-    class IdDictionary<TValue> : IDictionary<string, TValue>
+    internal class IdDictionary<TValue> : IDictionary<string, TValue>
     {
         private Dictionary<string, TValue> valueDic = new Dictionary<string, TValue>(StringComparer.OrdinalIgnoreCase);
         private Dictionary<string, string> nameDic = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -74,7 +74,7 @@ namespace MathExpression
         bool ICollection<KeyValuePair<string, TValue>>.Remove(KeyValuePair<string, TValue> item)
         {
             var r = ((ICollection<KeyValuePair<string, TValue>>)valueDic).Remove(item);
-            if(r)
+            if (r)
                 nameDic.Remove(item.Key);
             return r;
         }
