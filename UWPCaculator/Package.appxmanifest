@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="7de1f7d3-2889-4a7a-9e20-3706dba9744a"
+    Name="99573ba3-7469-4c59-82d0-5210a7390576"
     Publisher="CN=liuzh"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="7de1f7d3-2889-4a7a-9e20-3706dba9744a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="99573ba3-7469-4c59-82d0-5210a7390576" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Caculator</DisplayName>
+    <DisplayName>UWPCaculator</DisplayName>
     <PublisherDisplayName>liuzh</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="Caculator.App">
+      EntryPoint="UWPCaculator.App">
       <uap:VisualElements
-        DisplayName="Caculator"
+        DisplayName="UWPCaculator"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Caculator"
+        Description="UWPCaculator"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

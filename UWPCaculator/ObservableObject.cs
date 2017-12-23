@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caculator
+namespace UWPCaculator
 {
     class ObservableObject : INotifyPropertyChanged
     {
@@ -14,7 +14,7 @@ namespace Caculator
 
         protected void Set<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
-            if(!Equals(field, value))
+            if (!Equals(field, value))
             {
                 field = value;
                 RaisePropertyChanged(propertyName);

@@ -19,7 +19,7 @@ using Opportunity.MathExpression;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
-namespace Caculator
+namespace UWPCaculator
 {
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
@@ -46,7 +46,7 @@ namespace Caculator
                 data.Input = r.Formatted;
                 data.Output = $"Ans = {r.Compiled()}";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 data.Output = $"{ex.GetType()}\n{ex.Message}";
             }
