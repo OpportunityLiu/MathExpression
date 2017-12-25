@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Opportunity.MathExpression
 {
@@ -11,25 +12,21 @@ namespace Opportunity.MathExpression
         /// <summary>
         /// A list of parameter names, with the same order as <see cref="IFunctionInfo.GetExecutable(int)"/>.
         /// </summary>
-        IReadOnlyList<string> Parameters
-        {
-            get;
-        }
+        IReadOnlyList<string> Parameters { get; }
 
         /// <summary>
         /// The formatted representation <see cref="string"/> of the parsed math function.
         /// </summary>
-        string Formatted
-        {
-            get;
-        }
+        string Formatted { get; }
 
         /// <summary>
         /// A <see cref="Delegate"/> represents the math function.
         /// </summary>
-        Delegate Compiled
-        {
-            get;
-        }
+        Delegate Compiled { get; }
+
+        /// <summary>
+        /// An <see cref="LabelExpression"/> represents the math function.
+        /// </summary>
+        LambdaExpression Expression { get; }
     }
 }

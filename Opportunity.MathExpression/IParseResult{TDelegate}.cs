@@ -12,17 +12,11 @@ namespace Opportunity.MathExpression
         /// <summary>
         /// A <see cref="Delegate"/> represents the math function.
         /// </summary>
-        new TDelegate Compiled
-        {
-            get;
-        }
+        new TDelegate Compiled { get; }
 
         /// <summary>
-        /// An <see cref="Expression"/> represents the math function.
+        /// An <see cref="Expression{TDelegate}"/> represents the math function.
         /// </summary>
-        Expression<TDelegate> Expression
-        {
-            get;
-        }
+        new Expression<TDelegate> Expression { get; }
     }
 }

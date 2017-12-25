@@ -21,35 +21,17 @@ namespace Opportunity.MathExpression.Internal
             Compiled = Expression.Compile();
         }
 
-        public Expression<TDelegate> Expression
-        {
-            get;
-        }
+        public Expression<TDelegate> Expression { get; }
+        LambdaExpression IParseResult.Expression => Expression;
 
-        public TDelegate Compiled
-        {
-            get;
-        }
-
-        public IReadOnlyList<string> Parameters
-        {
-            get;
-        }
-
-        public string Formatted
-        {
-            get;
-        }
-
+        public TDelegate Compiled { get; }
         Delegate IParseResult.Compiled => (Delegate)(object)Compiled;
 
-        public IReadOnlyCollection<int> PreferedParameterCount
-        {
-            get
-            {
-                return this.funcInfo.PreferedParameterCount;
-            }
-        }
+        public IReadOnlyList<string> Parameters { get; }
+
+        public string Formatted { get; }
+
+        IReadOnlyCollection<int> IFunctionInfo.PreferedParameterCount => this.funcInfo.PreferedParameterCount;
 
         ExecutableInfo IFunctionInfo.GetExecutable(int parameterCount)
         {
@@ -60,9 +42,9 @@ namespace Opportunity.MathExpression.Internal
         {
             get
             {
-                if(_funcInfo == null)
-                    _funcInfo = new ParsedFunctionInfo(this);
-                return _funcInfo;
+                if (this._funcInfo == null)
+                    this._funcInfo = new ParsedFunctionInfo(this);
+                return this._funcInfo;
             }
         }
 
@@ -97,18 +79,15 @@ namespace Opportunity.MathExpression.Internal
                 this.PreferedParameterCount = new SingleItemCollection(parent.Parameters.Count);
             }
 
-            public IReadOnlyCollection<int> PreferedParameterCount
-            {
-                get;
-            }
+            public IReadOnlyCollection<int> PreferedParameterCount { get; }
 
             private ExecutableInfo executable;
 
             public ExecutableInfo GetExecutable(int parameterCount)
             {
-                if(parameterCount != this.parent.Parameters.Count)
+                if (parameterCount != this.parent.Parameters.Count)
                     return default(ExecutableInfo);
-                if(this.executable.Method==null)
+                if (this.executable.Method == null)
                     this.executable = new ExecutableInfo(this.parent.Compiled, this.parent.Compiled.GetType().GetMethod("Invoke"));
                 return this.executable;
             }
