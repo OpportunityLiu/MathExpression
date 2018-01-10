@@ -110,19 +110,11 @@ namespace Opportunity.MathExpression.Parsing
                 terms.Add(term(analyzer));
             }
             if (terms.Count == 1)
-            {
                 return getExpression(0);
-            }
-            var result = new SumExpression();
-            for (var i = 0; i < terms.Count; i++)
-            {
-                result.SubExpressions.Add(getExpression(i));
-            }
-            return result;
+            return new SumExpression(Enumerable.Range(0, terms.Count).Select(getExpression));
 
             Expression getExpression(int index)
             {
-
                 if (addOps[index].Type == TokenType.Plus)
                     return terms[index];
                 else
@@ -136,6 +128,7 @@ namespace Opportunity.MathExpression.Parsing
         {
             var powers = new List<Expression>();
             var mulOps = new List<Token>();
+            mulOps.Add(Token.Multiply(0));
             powers.Add(power(analyzer));
             while (!analyzer.Ended)
             {
@@ -149,16 +142,13 @@ namespace Opportunity.MathExpression.Parsing
             }
             if (powers.Count == 1)
                 return powers[0];
-            var result = new ProductExpression();
-            result.SubExpressions.Add(powers[0]);
-            for (var i = 0; i < mulOps.Count; i++)
+            return new ProductExpression(powers.Select((p, i) =>
             {
                 if (mulOps[i].Type == TokenType.Multiply)
-                    result.SubExpressions.Add(powers[i + 1]);
+                    return p;
                 else
-                    result.SubExpressions.Add(new InverseExpression(powers[i + 1]));
-            }
-            return result;
+                    return new InverseExpression(p);
+            }));
         }
 
         // Power -> Factor { PowOp Factor }

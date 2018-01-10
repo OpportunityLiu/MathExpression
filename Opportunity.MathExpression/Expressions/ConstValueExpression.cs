@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Opportunity.MathExpression.Expressions
 {
+    [System.Diagnostics.DebuggerDisplay(@"ConstValue\{{Value}\}")]
     public sealed class ConstValueExpression : ConstExpression
     {
-        public double Value { get; set; }
+        public ConstValueExpression(double value) : base(value) { }
 
-        public ConstValueExpression(double value) => this.Value = value;
+        public override string ToString() => Value.ToString();
     }
 }

@@ -4,15 +4,16 @@ using System.Text;
 
 namespace Opportunity.MathExpression.Expressions
 {
+    [System.Diagnostics.DebuggerDisplay(@"Constant\{{Name,nq} = {Value}\}")]
     public sealed class ConstantExpression : ConstExpression
     {
         public string Name { get; }
-        public double Value { get; }
 
-        public ConstantExpression(string name, double value)
+        public ConstantExpression(string name, double value) : base(value)
         {
             this.Name = name;
-            this.Value = value;
         }
+
+        public override string ToString() => Name;
     }
 }
