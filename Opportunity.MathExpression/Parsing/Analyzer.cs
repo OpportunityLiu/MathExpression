@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Opportunity.MathExpression.Expressions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
-namespace Opportunity.MathExpression.Internal
+namespace Opportunity.MathExpression.Parsing
 {
     class Analyzer
     {
@@ -37,11 +37,6 @@ namespace Opportunity.MathExpression.Internal
                 Expressions.Push(Current.ToString());
             return r;
         }
-
-        public Dictionary<string, ParameterExpression> Parameters
-        {
-            get;
-        } = new Dictionary<string, ParameterExpression>(StringComparer.OrdinalIgnoreCase);
 
         public Expression Expr
         {

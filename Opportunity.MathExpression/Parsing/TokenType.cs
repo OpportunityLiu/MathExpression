@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Opportunity.MathExpression.Internal
+namespace Opportunity.MathExpression.Parsing
 {
     [Flags]
     enum TokenType

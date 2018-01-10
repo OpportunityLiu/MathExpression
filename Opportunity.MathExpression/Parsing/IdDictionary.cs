@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Opportunity.MathExpression.Internal
+namespace Opportunity.MathExpression.Parsing
 {
     internal class IdDictionary<TValue> : IDictionary<string, TValue>
     {

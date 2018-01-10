@@ -1,4 +1,4 @@
-﻿namespace Opportunity.MathExpression.Internal
+﻿namespace Opportunity.MathExpression.Parsing
 {
     class Token
     {

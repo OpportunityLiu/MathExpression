@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Opportunity.MathExpression
+namespace Opportunity.MathExpression.Parsing
 {
     /// <summary>
     /// Exception in tokenizing math expressions. 

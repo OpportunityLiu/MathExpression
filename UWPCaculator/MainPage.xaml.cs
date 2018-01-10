@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Opportunity.MathExpression;
+using Opportunity.MathExpression.Parsing;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
@@ -30,7 +31,7 @@ namespace UWPCaculator
         {
             this.InitializeComponent();
             var f = Parser.Parse("sin(x)^2");
-            Parser.Functions["Sin2"] = f;
+            //Parser.Functions["Sin2"] = f;
             records.Add(new Record());
             var p = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
         }
@@ -42,9 +43,9 @@ namespace UWPCaculator
             var data = (Record)sender.Tag;
             try
             {
-                var r = Parser.Parse0(data.Input);
-                data.Input = r.Formatted;
-                data.Output = $"Ans = {r.Compiled()}";
+                var r = Parser.Parse(data.Input);
+                //data.Input = r.Formatted;
+                //data.Output = $"Ans = {r.Compiled()}";
             }
             catch (Exception ex)
             {

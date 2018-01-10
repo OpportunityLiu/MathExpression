@@ -1,11 +1,10 @@
-﻿using Opportunity.MathExpression.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Opportunity.MathExpression.Internal
+namespace Opportunity.MathExpression.Parsing
 {
     static class TokenExtension
     {

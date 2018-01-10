@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Opportunity.MathExpression
+namespace Opportunity.MathExpression.Functions
 {
     /// <summary>
     /// Some functions can be used in math expresions. Functions in <see cref="Math"/> can also be used.

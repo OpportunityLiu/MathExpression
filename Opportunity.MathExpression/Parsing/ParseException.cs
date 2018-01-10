@@ -1,7 +1,6 @@
 ﻿using System;
-using Opportunity.MathExpression.Internal;
 
-namespace Opportunity.MathExpression
+namespace Opportunity.MathExpression.Parsing
 {
     /// <summary>
     /// Exception in parsing math expressions. 
@@ -22,9 +21,9 @@ namespace Opportunity.MathExpression
         internal static ParseException EmptyToken()
             => new ParseException($"No tokens found.");
 
-        internal static ParseException ParamMismatch(Analyzer analyzer, Token functionToken, IFunctionInfo functionInfo)
+        internal static ParseException ParamMismatch(Analyzer analyzer, Token functionToken, Functions.Function function)
             => new ParseException($@"Mismatch between function and paramter list. Need {
-                string.Join(" or ", functionInfo.PreferedParameterCount)
+                string.Join(" or ", function.PreferedParameterCount)
                 } parameter(s).
 Position: {functionToken.Position + 1}");
 
