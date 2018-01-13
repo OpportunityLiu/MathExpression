@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using Opportunity.MathExpression.Symbols;
@@ -22,6 +23,13 @@ namespace Opportunity.MathExpression.Expressions
                 return new ConstantExpression(1 / cv.Value);
             case InverseExpression i:
                 return i.InnerExpression;
+            case ProductExpression pe:
+                return new ProductExpression(pe.SubExpressions.Select(exp =>
+                {
+                    if (exp is InverseExpression ie)
+                        return ie.InnerExpression;
+                    return new InverseExpression(exp);
+                })).Simplify();
             default:
                 return new InverseExpression(si);
             }

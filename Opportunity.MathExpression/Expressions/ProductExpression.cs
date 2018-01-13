@@ -38,7 +38,37 @@ namespace Opportunity.MathExpression.Expressions
         {
             if (this.SubExpressions.Count == 1)
                 return this.SubExpressions[0].Simplify();
-            return base.Simplify();
+            var sub = flat(this).Select(exp => exp.Simplify());
+            var exps = new List<Expression>();
+            var constVal = 1d;
+            foreach (var item in sub)
+            {
+                if (item is ConstantExpression constE)
+                    constVal *= constE.Value;
+                else
+                    exps.Add(item);
+            }
+            if (constVal != 1)
+                exps.Insert(0, new ConstantExpression(constVal));
+            if (exps.Count == 1)
+                return exps[0];
+            return new ProductExpression(exps);
+
+            IEnumerable<Expression> flat(Expression exp)
+            {
+                if (exp is ProductExpression se)
+                {
+                    foreach (var item in se.SubExpressions)
+                    {
+                        foreach (var item2 in flat(item))
+                        {
+                            yield return item2;
+                        }
+                    }
+                }
+                else
+                    yield return exp;
+            }
         }
 
         public override string ToString()

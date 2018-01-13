@@ -13,6 +13,7 @@ namespace Opportunity.MathExpression.Expressions
 
         public VariableExpresssion(string name) => this.Name = name;
 
+        public override Expression Simplify() => this;
         public override Expression Clone() => this;
 
         protected override double EvaluateRealImpl(SymbolProvider symbolProvider)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using Opportunity.MathExpression.Symbols;
@@ -22,6 +23,13 @@ namespace Opportunity.MathExpression.Expressions
                 return new ConstantExpression(-cv.Value);
             case NegateExpression n:
                 return n.InnerExpression;
+            case SumExpression se:
+                return new SumExpression(se.SubExpressions.Select(exp =>
+                {
+                    if (exp is NegateExpression ne)
+                        return ne.InnerExpression;
+                    return new NegateExpression(exp);
+                })).Simplify();
             default:
                 return new NegateExpression(si);
             }

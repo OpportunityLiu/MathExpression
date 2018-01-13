@@ -96,7 +96,7 @@ namespace Opportunity.MathExpression.Expressions
 
         public override Expression Clone()
         {
-            var r = (BinaryExpression)this.Clone();
+            var r = (BinaryExpression)base.Clone();
             r.LeftExpression = r.LeftExpression.Clone();
             r.RightExpression = r.RightExpression.Clone();
             return r;

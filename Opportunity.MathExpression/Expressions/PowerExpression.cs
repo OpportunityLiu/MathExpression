@@ -35,11 +35,28 @@ namespace Opportunity.MathExpression.Expressions
             switch (result.RightExpression)
             {
             case ConstantExpression cv:
+                if (result.LeftExpression is ConstantExpression lc)
+                    return new ConstantExpression(Math.Pow(lc.Value, cv.Value));
+                if (cv.Value == 0)
+                    return new ConstantExpression(1);
                 if (cv.Value == 1)
                     return result.LeftExpression;
                 if (cv.Value == -1)
                     return new InverseExpression(result.LeftExpression).Simplify();
                 break;
+            default:
+                break;
+            }
+            switch (result.LeftExpression)
+            {
+            case ConstantExpression cv:
+                if (cv.Value == 1)
+                    return new ConstantExpression(1);
+                if (cv.Value == 0)
+                    return new ConstantExpression(0);
+                break;
+            case InverseExpression iv:
+                return new PowerExpression(iv.InnerExpression, new NegateExpression(result.RightExpression)).Simplify();
             default:
                 break;
             }

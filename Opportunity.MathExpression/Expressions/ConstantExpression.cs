@@ -12,6 +12,7 @@ namespace Opportunity.MathExpression.Expressions
 
         internal ConstantExpression(double value) => this.Value = value;
 
+        public override Expression Simplify() => this;
         public override Expression Clone() => this;
         public override string ToString() => Value.ToString();
         protected override double EvaluateRealImpl(SymbolProvider symbolProvider) => this.Value;
