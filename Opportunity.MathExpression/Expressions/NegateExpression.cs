@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
+using Opportunity.MathExpression.Symbols;
 
 namespace Opportunity.MathExpression.Expressions
 {
@@ -16,8 +18,8 @@ namespace Opportunity.MathExpression.Expressions
             var si = InnerExpression.Simplify();
             switch (si)
             {
-            case ConstValueExpression cv:
-                return new ConstValueExpression(-cv.Value);
+            case ConstantExpression cv:
+                return new ConstantExpression(-cv.Value);
             case NegateExpression n:
                 return n.InnerExpression;
             default:
@@ -25,6 +27,22 @@ namespace Opportunity.MathExpression.Expressions
             }
         }
 
-        public override string ToString() => $"-{InnerExpression}";
+        public override string ToString()
+        {
+            if (needBracket(InnerExpression))
+                return $"-({InnerExpression})";
+            else
+                return $"-{InnerExpression}";
+        }
+
+        private static bool needBracket(Expression expression)
+        {
+            return expression is SumExpression;
+        }
+
+        protected override Complex EvaluateComplexImpl(SymbolProvider symbolProvider)
+            => -InnerExpression.EvaluateComplex(symbolProvider);
+        protected override double EvaluateRealImpl(SymbolProvider symbolProvider)
+            => -InnerExpression.EvaluateReal(symbolProvider);
     }
 }

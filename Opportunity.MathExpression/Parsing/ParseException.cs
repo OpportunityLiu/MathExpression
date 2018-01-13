@@ -21,15 +21,6 @@ namespace Opportunity.MathExpression.Parsing
         internal static ParseException EmptyToken()
             => new ParseException($"No tokens found.");
 
-        internal static ParseException ParamMismatch(Analyzer analyzer, Token functionToken, Functions.Function function)
-            => new ParseException($@"Mismatch between function and paramter list. Need {
-                string.Join(" or ", function.PreferedParameterCount)
-                } parameter(s).
-Position: {functionToken.Position + 1}");
-
-        internal static ParseException NotFunction(Analyzer analyzer, Token notFunctionToken)
-            => new ParseException($"{notFunctionToken.Id} is not a function.\nPosition: {notFunctionToken.Position + 1}");
-
         private ParseException(string message) : base(message)
         {
         }

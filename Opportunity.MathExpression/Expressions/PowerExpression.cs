@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
+using Opportunity.MathExpression.Symbols;
 
 namespace Opportunity.MathExpression.Expressions
 {
@@ -11,6 +13,20 @@ namespace Opportunity.MathExpression.Expressions
         {
         }
 
+        protected override double EvaluateRealImpl(SymbolProvider symbolProvider)
+        {
+            var l = LeftExpression.EvaluateReal(symbolProvider);
+            var r = RightExpression.EvaluateReal(symbolProvider);
+            return Math.Pow(l, r);
+        }
+
+        protected override Complex EvaluateComplexImpl(SymbolProvider symbolProvider)
+        {
+            var l = LeftExpression.EvaluateComplex(symbolProvider);
+            var r = RightExpression.EvaluateComplex(symbolProvider);
+            return Complex.Pow(l, r);
+        }
+
         public override Expression Simplify()
         {
             var r = base.Simplify();
@@ -18,7 +34,7 @@ namespace Opportunity.MathExpression.Expressions
                 return r;
             switch (result.RightExpression)
             {
-            case ConstValueExpression cv:
+            case ConstantExpression cv:
                 if (cv.Value == 1)
                     return result.LeftExpression;
                 if (cv.Value == -1)
@@ -30,6 +46,29 @@ namespace Opportunity.MathExpression.Expressions
             return result;
         }
 
-        public override string ToString() => $"{LeftExpression}^{RightExpression}";
+        public override string ToString()
+        {
+            var lb = needBracketL(LeftExpression);
+            var rb = needBracketR(RightExpression);
+            return $"{(lb ? "(" : "")}{LeftExpression}{(lb ? ")" : "")}^{(rb ? "(" : "")}{RightExpression}{(rb ? ")" : "")}";
+        }
+
+        private static bool needBracketL(Expression expression)
+        {
+            return expression is ProductExpression
+                || expression is SumExpression
+                || expression is PowerExpression
+                || expression is NegateExpression
+                || expression is InverseExpression
+                || (expression is ConstantExpression ce && ce.Value < 0);
+        }
+
+        private static bool needBracketR(Expression expression)
+        {
+            return expression is ProductExpression
+                || expression is SumExpression
+                || expression is PowerExpression
+                || expression is InverseExpression;
+        }
     }
 }

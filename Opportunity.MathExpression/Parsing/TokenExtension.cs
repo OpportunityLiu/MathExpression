@@ -47,5 +47,10 @@ namespace Opportunity.MathExpression.Parsing
         {
             return that.Type == TokenType.Comma;
         }
+
+        public static bool IsEOF(this Token that)
+        {
+            return that.Type == TokenType.EOF;
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Opportunity.MathExpression.Functions
     /// <summary>
     /// Some functions can be used in math expresions. Functions in <see cref="Math"/> can also be used.
     /// </summary>
-    public static class Functions
+    public static class MathExtension
     {
         /// <summary>
         /// Returns the max value in <paramref name="args"/>.

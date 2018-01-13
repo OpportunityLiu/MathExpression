@@ -44,8 +44,8 @@ namespace UWPCaculator
             try
             {
                 var r = Parser.Parse(data.Input);
-                //data.Input = r.Formatted;
-                //data.Output = $"Ans = {r.Compiled()}";
+                data.Input = r.ToString();
+                data.Output = $"Ans = {r.EvaluateComplex()}";
             }
             catch (Exception ex)
             {

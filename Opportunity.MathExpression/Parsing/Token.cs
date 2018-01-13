@@ -64,8 +64,10 @@
                 return "^";
             case TokenType.Comma:
                 return ",";
+            case TokenType.EOF:
+                return "(EoF)";
             default:
-                return base.ToString();
+                return Type.ToString();
             }
         }
 
@@ -77,5 +79,6 @@
         public static Token LeftBracket(int position) => new Token(TokenType.LeftBracket, position);
         public static Token RightBracket(int position) => new Token(TokenType.RightBracket, position);
         public static Token Comma(int position) => new Token(TokenType.Comma, position);
+        public static Token EOF(int position) => new Token(TokenType.EOF, position);
     }
 }

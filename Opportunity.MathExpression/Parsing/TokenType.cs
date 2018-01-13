@@ -5,6 +5,7 @@ namespace Opportunity.MathExpression.Parsing
     [Flags]
     enum TokenType
     {
+        EOF = -1,
         Number = 1,
         Id = 2,
         LeftBracket = 4,

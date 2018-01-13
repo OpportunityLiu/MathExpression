@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
+using Opportunity.MathExpression.Symbols;
 
 namespace Opportunity.MathExpression.Expressions
 {
@@ -12,6 +14,17 @@ namespace Opportunity.MathExpression.Expressions
         public virtual Expression Simplify() => this.Clone();
 
         public virtual Expression Clone() => (Expression)this.MemberwiseClone();
+
+        public double EvaluateReal() => EvaluateReal(SymbolProvider.Default);
+        public double EvaluateReal(SymbolProvider symbolProvider) => EvaluateRealImpl(symbolProvider ?? SymbolProvider.Default);
+
+        public Complex EvaluateComplex() => EvaluateComplex(SymbolProvider.Default);
+        public Complex EvaluateComplex(SymbolProvider symbolProvider) => EvaluateComplexImpl(symbolProvider ?? SymbolProvider.Default);
+
+        protected abstract double EvaluateRealImpl(SymbolProvider symbolProvider);
+        protected abstract Complex EvaluateComplexImpl(SymbolProvider symbolProvider);
+
+        public abstract override string ToString();
     }
 
     public abstract class AggregateExpression : Expression

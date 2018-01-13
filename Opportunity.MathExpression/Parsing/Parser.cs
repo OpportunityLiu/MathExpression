@@ -32,57 +32,13 @@ namespace Opportunity.MathExpression.Parsing
         {
             if (string.IsNullOrEmpty(expression))
                 throw new ArgumentNullException(nameof(expression));
-            using (var tokens = prepare(Tokenizer.Tokenize(expression)).GetEnumerator())
-            {
-                var analyzer = new Analyzer(tokens);
-                if (!analyzer.MoveNext())
-                    throw ParseException.EmptyToken();
-                analyzer.Expr = Parser.expression(analyzer);
-                if (!analyzer.Ended)
-                    throw ParseException.UnexpectedToken(analyzer);
-                return analyzer;
-            }
-        }
-
-        /// <summary>
-        /// Remove continuous "+" and "-"
-        /// </summary>
-        private static IEnumerable<Token> prepare(IEnumerable<Token> tokens)
-        {
-            Token token = null;
-            foreach (var item in tokens)
-            {
-                if (!item.IsAddOp())
-                {
-                    if (token != null)
-                    {
-                        yield return token;
-                        token = null;
-                    }
-                    yield return item;
-                }
-                else
-                {
-                    if (token == null)
-                    {
-                        token = item;
-                    }
-                    else if (item.Type == TokenType.Minus)
-                    {
-                        if (token.Type == TokenType.Plus)
-                            token = item;
-                        else
-                            token = Token.Plus(item.Position);
-                    }
-                    else if (item.Type == TokenType.Plus)
-                    {
-                        if (token.Type == TokenType.Plus)
-                            token = item;
-                        else
-                            token = Token.Minus(item.Position);
-                    }
-                }
-            }
+            var analyzer = new Analyzer(expression);
+            if (!analyzer.MoveNext())
+                throw ParseException.EmptyToken();
+            analyzer.Expr = Parser.expression(analyzer);
+            if (!analyzer.Ended)
+                throw ParseException.UnexpectedToken(analyzer);
+            return analyzer;
         }
 
         // Expression -> [AddOp] Term { AddOp Term }
@@ -185,52 +141,32 @@ namespace Opportunity.MathExpression.Parsing
             {
             case TokenType.Number:
                 analyzer.MoveNext();
-                return new ConstValueExpression(first.Number);
+                return new ConstantExpression(first.Number);
             case TokenType.Id:
-                if (functions.TryGetValue(first.Id, out var func))
+                analyzer.MoveNext();
+                if (analyzer.Current.IsLeftBracket())
                 {
-                    analyzer.Expressions.Pop();
-                    analyzer.Expressions.Push(functions.GetKey(first.Id));
-
-                    if (!analyzer.MoveNext())
-                        throw ParseException.WrongEneded();
-                    if (analyzer.Current.Type != TokenType.LeftBracket)
-                        throw ParseException.UnexpectedToken(analyzer, TokenType.LeftBracket);
+                    // funciton call
                     if (!analyzer.MoveNext())
                         throw ParseException.WrongEneded();
                     var paramList = new List<Expression>();
-                    if (!analyzer.Current.IsRightBracket())
+                    if (analyzer.Current.IsRightBracket())
+                        throw ParseException.UnexpectedToken(analyzer);
+                    paramList.Add(expression(analyzer));
+                    while (analyzer.Current.IsComma())
                     {
+                        if (!analyzer.MoveNext())
+                            throw ParseException.WrongEneded();
                         paramList.Add(expression(analyzer));
-                        while (analyzer.Current.IsComma())
-                        {
-                            if (!analyzer.MoveNext())
-                                throw ParseException.WrongEneded();
-                            paramList.Add(expression(analyzer));
-                        }
-                        if (analyzer.Current.Type != TokenType.RightBracket)
-                            throw ParseException.UnexpectedToken(analyzer, TokenType.RightBracket);
                     }
+                    if (analyzer.Current.Type != TokenType.RightBracket)
+                        throw ParseException.UnexpectedToken(analyzer, TokenType.RightBracket);
                     analyzer.MoveNext();
-                    if (!func.AcceptParameterCount(paramList.Count))
-                        throw ParseException.ParamMismatch(analyzer, first, func);
-                    return new FunctionExpression(func, paramList);
-                }
-                else if (constantValues.TryGetValue(first.Id, out var constantValue))
-                {
-                    analyzer.Expressions.Pop();
-                    analyzer.Expressions.Push(constantValues.GetKey(first.Id));
+                    return new FunctionExpression(first.Id, paramList);
 
-                    analyzer.MoveNext();
-                    if (analyzer.Current.IsLeftBracket())
-                        throw ParseException.NotFunction(analyzer, first);
-                    return constantValue;
                 }
                 else
                 {
-                    analyzer.MoveNext();
-                    if (analyzer.Current.IsLeftBracket())
-                        throw ParseException.NotFunction(analyzer, first);
                     return new VariableExpresssion(first.Id);
                 }
             case TokenType.LeftBracket:
@@ -258,48 +194,6 @@ namespace Opportunity.MathExpression.Parsing
             default:
                 throw ParseException.UnexpectedToken(analyzer, TokenType.Number | TokenType.Id | TokenType.LeftBracket);
             }
-        }
-
-        /// <summary>
-        /// Constant values can be used in math expressions.
-        /// You can edit this dictionary to add/remove/edit constant values.
-        /// </summary>
-        public static IDictionary<string, ConstantExpression> ConstantValues => constantValues;
-
-        private static IdDictionary<ConstantExpression> constantValues = new IdDictionary<ConstantExpression>()
-        {
-            ["PI"] = new ConstantExpression("PI", Math.PI),
-            ["E"] = new ConstantExpression("E", Math.E),
-        };
-
-        /// <summary>
-        /// Functions can be used in math expressions.
-        /// You can edit this dictionary to add/remove/edit functions.
-        /// </summary>
-        public static IDictionary<string, Function> Functions => functions;
-
-        private static IdDictionary<Function> functions = getFunctions();
-
-        private static IdDictionary<Function> getFunctions()
-        {
-            var r = new IdDictionary<Function>();
-            var query = from item in typeof(Math).GetMethods().Concat(typeof(MathExpression.Functions.Functions).GetMethods())
-                        where item.ReturnType == typeof(double)
-                        let param = item.GetParameters()
-                        let array = param.First().ParameterType == typeof(double[])
-                        where array || param.All(p => p.ParameterType == typeof(double))
-                        group new { item, paramLength = array ? -1 : param.Length } by item.Name;
-            foreach (var item in query)
-            {
-
-                var func = new StaticMethodFunction(item.Key);
-                foreach (var method in item)
-                {
-                    func.Methods[method.paramLength] = method.item;
-                }
-                r[item.Key] = func;
-            }
-            return r;
         }
     }
 }
