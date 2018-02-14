@@ -46,14 +46,14 @@ namespace Opportunity.MathExpression.Symbols
             var q = from item in methods ?? throw new ArgumentNullException(nameof(methods))
                     let count = countParameter(item)
                     orderby count ascending
-                    select new { item.MethodHandle, count };
+                    select new { item, count };
             foreach (var item in q)
             {
-                this.methods[item.count] = item.MethodHandle;
+                this.methods[item.count] = item.item;
             }
         }
 
-        private readonly Dictionary<int, RuntimeMethodHandle> methods = new Dictionary<int, RuntimeMethodHandle>();
+        private readonly Dictionary<int, MethodInfo> methods = new Dictionary<int, MethodInfo>();
 
         public override bool AcceptParameterCount(int count)
         {
@@ -71,14 +71,14 @@ namespace Opportunity.MathExpression.Symbols
         {
             var c = values.Count;
             var mc = c;
-            if (!this.methods.TryGetValue(c, out var handle))
+            if (!this.methods.TryGetValue(c, out var method))
             {
                 foreach (var item in this.methods)
                 {
                     if (item.Key < 0 && c >= -item.Key)
                     {
                         mc = item.Key;
-                        handle = item.Value;
+                        method = item.Value;
                     }
                 }
             }
@@ -103,10 +103,10 @@ namespace Opportunity.MathExpression.Symbols
                 }
                 param[param.Length - 1] = remain;
             }
-            var method = MethodBase.GetMethodFromHandle(handle);
             return ((double)method.Invoke(null, param));
         }
 
-        public override Complex EvaluateComplex(IReadOnlyList<Complex> values, SymbolProvider symbolProvider) => throw new NotImplementedException();
+        public override Complex EvaluateComplex(IReadOnlyList<Complex> values, SymbolProvider symbolProvider)
+            => throw new NotImplementedException();
     }
 }

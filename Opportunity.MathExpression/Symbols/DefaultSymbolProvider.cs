@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Text;
 
 namespace Opportunity.MathExpression.Symbols
@@ -32,7 +33,8 @@ namespace Opportunity.MathExpression.Symbols
         private static Dictionary<string, Function> getFunctions()
         {
             var r = new Dictionary<string, Function>(StringComparer.OrdinalIgnoreCase);
-            var query = from item in typeof(Math).GetMethods().Concat(typeof(Functions.MathExtension).GetMethods())
+            var query = from item in typeof(Math).GetTypeInfo().DeclaredMethods
+                            .Concat(typeof(Functions.MathExtension).GetTypeInfo().DeclaredMethods)
                         where StaticMethodFunction.AvailableMethodInfo(item)
                         group item by item.Name;
             foreach (var item in query)

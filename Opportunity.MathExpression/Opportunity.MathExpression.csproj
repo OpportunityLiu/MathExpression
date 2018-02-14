@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.0.0</Version>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <Version>2.0.1</Version>
     <Authors>Opportunity</Authors>
     <Company>Opportunity</Company>
     <PackageLicenseUrl>https://github.com/OpportunityLiu/MathExpression/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/OpportunityLiu/MathExpression</PackageProjectUrl>
     <RepositoryUrl></RepositoryUrl>
-    <PackageTags>UWP parser math expression caculator</PackageTags>
+    <PackageTags>parser math expression caculator</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Parse math expressions, generate lambda expressions and compiled functions.</Description>
